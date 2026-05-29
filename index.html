@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Keerthi Sarath | Creative Director</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+<style>
+:root {
+  --bg: #050505; --text: #F0F0F0; --accent: #CCFF00;
+  --grid: rgba(255,255,255,0.15); --muted: #888888;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Space Mono',monospace;overflow-x:hidden;cursor:none;-webkit-font-smoothing:antialiased;}
+
+/* CURSOR — single mix-blend-mode:difference circle, inverts text on hover */
+.cursor{position:fixed;top:0;left:0;width:24px;height:24px;background:white;border-radius:50%;transform:translate(-50%,-50%);mix-blend-mode:difference;pointer-events:none;z-index:10000;transition:width .3s cubic-bezier(.16,1,.3,1),height .3s cubic-bezier(.16,1,.3,1);}
+body.hovering .cursor{width:90px;height:90px;}
+/* Keep custom cursor active over iframes — overlay intercepts mouse */
+.vc-iframe-shield{position:absolute;inset:0;z-index:3;pointer-events:none;display:none;}
+.vc-media.playing .vc-iframe-shield{display:block;pointer-events:auto;cursor:none;}
+
+.grid-container{border-left:1px solid var(--grid);border-right:1px solid var(--grid);max-width:1600px;margin:0 auto;}
+h1,h2,h3,h4{font-family:'Bricolage Grotesque',sans-serif;text-transform:uppercase;font-weight:800;line-height:.9;}
+.mono-sm{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.mono-md{font-size:14px;line-height:1.6;color:var(--muted);}
+
+/* NAV */
+nav{display:flex;justify-content:space-between;align-items:center;padding:24px 40px;position:fixed;top:0;width:100%;max-width:1600px;left:50%;transform:translateX(-50%);z-index:100;mix-blend-mode:difference;}
+.logo{font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:800;color:#fff;text-decoration:none;}
+.nav-links{display:flex;gap:32px;}
+.nav-links a{color:#fff;text-decoration:none;font-size:11px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding-top:100px;}
+.hero-title{font-size:clamp(60px,14vw,220px);padding:0 40px;margin-bottom:20px;letter-spacing:-.03em;}
+.hero-sub{padding:0 40px 60px 40px;max-width:820px;}
+.hero-role{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(18px,2vw,26px);font-weight:800;text-transform:uppercase;color:var(--text);margin-bottom:14px;letter-spacing:-.01em;}
+.hero-desc{color:var(--muted);font-size:clamp(13px,1.1vw,15px);line-height:1.8;}
+.hero-desc span{color:var(--accent);}
+.marquee-container{border-top:1px solid var(--grid);border-bottom:1px solid var(--grid);padding:20px 0;overflow:hidden;background:var(--text);color:var(--bg);white-space:nowrap;}
+.marquee-content{display:inline-block;font-family:'Bricolage Grotesque',sans-serif;font-size:32px;font-weight:800;text-transform:uppercase;}
+.marquee-content span{padding:0 40px;}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--grid);}
+.hs-box{padding:40px;border-right:1px solid var(--grid);}
+.hs-box:last-child{border-right:none;}
+.hs-num{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(32px,4vw,64px);color:var(--accent);margin-bottom:10px;}
+.section-header{padding:80px 40px;display:grid;grid-template-columns:1fr 3fr;gap:40px;border-bottom:1px solid var(--grid);}
+.sec-title{font-size:clamp(40px,8vw,120px);}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--grid);}
+.about-text{padding:80px 40px;font-size:18px;line-height:1.8;color:var(--text);border-right:1px solid var(--grid);}
+.about-stats{display:grid;grid-template-columns:1fr;}
+.as-box{padding:40px;border-bottom:1px solid var(--grid);display:flex;justify-content:space-between;align-items:center;}
+.as-box:last-child{border-bottom:none;}
+.as-num{font-family:'Bricolage Grotesque',sans-serif;font-size:48px;color:var(--text);}
+.as-label{text-align:right;max-width:200px;}
+
+/* VIDEO CARDS */
+.video-showcase{padding:80px 40px;border-bottom:1px solid var(--grid);}
+.vs-intro{margin-bottom:60px;}
+.vs-intro h3{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,56px);font-weight:800;text-transform:uppercase;line-height:.95;margin-bottom:16px;}
+.vs-intro p{font-size:13px;color:var(--muted);max-width:600px;line-height:1.7;}
+.vc{border:1px solid var(--grid);background:#0a0a0a;transition:border-color .3s;}
+.vc:hover{border-color:var(--accent);}
+.vc-media{position:relative;width:100%;overflow:hidden;}
+.vc-media.r169{aspect-ratio:16/9;}
+.vc-media.r916{aspect-ratio:9/16;}
+.vc-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:linear-gradient(135deg,#0e0e0e 0%,#181818 100%);cursor:pointer;transition:background .3s;}
+.vc-placeholder:hover{background:linear-gradient(135deg,#111 0%,#1f1f1f 100%);}
+.vc-placeholder-label{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(11px,1.2vw,15px);font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:rgba(240,240,240,.5);text-align:center;padding:0 20px;line-height:1.3;max-width:80%;}
+.vc-play-btn{width:64px;height:64px;border-radius:50%;border:1.5px solid rgba(204,255,0,.55);background:rgba(204,255,0,.08);display:flex;align-items:center;justify-content:center;transition:background .3s,transform .3s,border-color .3s;flex-shrink:0;}
+.vc-placeholder:hover .vc-play-btn{background:rgba(204,255,0,.22);border-color:var(--accent);transform:scale(1.1);}
+.vc-tri{width:0;height:0;border-top:10px solid transparent;border-bottom:10px solid transparent;border-left:18px solid var(--accent);margin-left:4px;}
+.vc-hint{font-size:9px;letter-spacing:.16em;color:rgba(204,255,0,.5);text-transform:uppercase;}
+.vc-media iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+.vc-caption{padding:18px 20px 20px;border-top:1px solid var(--grid);display:flex;justify-content:space-between;align-items:flex-start;gap:16px;}
+.vc-cap-left{display:flex;flex-direction:column;gap:5px;flex:1;}
+.vc-cap-tag{font-size:9px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;}
+.vc-cap-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(14px,1.8vw,22px);font-weight:800;text-transform:uppercase;line-height:1;color:var(--text);}
+.vc-cap-desc{font-size:11px;color:var(--muted);line-height:1.6;margin-top:4px;}
+.vc-cap-stat{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(20px,2.2vw,34px);color:var(--accent);white-space:nowrap;font-weight:800;flex-shrink:0;align-self:flex-end;}
+.vs-row-full{margin-bottom:4px;}
+.vs-row-full .vc-cap-title{font-size:clamp(20px,3vw,38px);}
+.vs-row-full .vc-cap-desc{max-width:700px;font-size:12px;}
+.vs-row-full .vc-cap-stat{font-size:clamp(28px,3.5vw,52px);}
+.vs-row-full .vc-play-btn{width:80px;height:80px;}
+.vs-row-full .vc-tri{border-top-width:13px;border-bottom-width:13px;border-left-width:22px;}
+.vs-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:4px;}
+.vs-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:4px;}
+.vs-row-mixed{display:grid;grid-template-columns:1.8fr 1fr;gap:4px;}
+
+/* WORK CARDS — non-video items */
+.work-cards{padding:80px 40px;border-bottom:1px solid var(--grid);}
+.wc-intro{margin-bottom:60px;}
+.wc-intro h3{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,4vw,56px);font-weight:800;text-transform:uppercase;line-height:.95;margin-bottom:16px;}
+.wc-intro p{font-size:13px;color:var(--muted);max-width:600px;line-height:1.7;}
+.wc-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;}
+.wc-card{background:#0a0a0a;border:1px solid var(--grid);padding:48px 40px;display:flex;flex-direction:column;justify-content:space-between;gap:32px;transition:border-color .3s,background .3s;min-height:320px;}
+.wc-card:hover{border-color:var(--accent);background:#0f0f0f;}
+.wc-card-full{grid-column:span 2;}
+.wc-top{display:flex;flex-direction:column;gap:12px;}
+.wc-tag{font-size:9px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;}
+.wc-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(22px,3vw,44px);font-weight:800;text-transform:uppercase;line-height:.95;color:var(--text);}
+.wc-desc{font-size:13px;color:var(--muted);line-height:1.75;max-width:640px;}
+.wc-bottom{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;}
+.wc-stat{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(32px,4vw,64px);color:var(--accent);line-height:1;font-weight:800;}
+.wc-stat-label{font-size:10px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-top:6px;}
+.wc-link{display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);text-decoration:none;border:1px solid rgba(204,255,0,.3);padding:10px 18px;transition:all .3s;white-space:nowrap;}
+.wc-link:hover{background:var(--accent);color:#050505;border-color:var(--accent);}
+
+/* LI EMBED wrapper */
+.li-embed-wrap{position:relative;width:100%;min-height:200px;background:#0a0a0a;border:1px solid var(--grid);overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.li-embed-wrap iframe{display:block;width:100%;border:none;}
+.li-fallback{display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:40px;text-align:center;}
+.li-fallback p{font-size:12px;color:var(--muted);line-height:1.7;max-width:400px;}
+
+/* AI STACK */
+.ai-grid{display:grid;grid-template-columns:1.5fr 1fr;border-bottom:1px solid var(--grid);}
+.ai-main{padding:80px 40px;border-right:1px solid var(--grid);}
+.ai-main p{font-size:16px;line-height:1.8;margin-bottom:40px;max-width:600px;color:var(--muted);}
+.ai-tags{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:40px;}
+.ai-tag{border:1px solid var(--grid);padding:10px 20px;font-size:12px;text-transform:uppercase;transition:all .3s;}
+.ai-tag:hover{background:var(--text);color:var(--bg);border-color:var(--text);}
+/* Neural Lens card inside AI main */
+.nl-card{border:1px solid rgba(204,255,0,.25);background:rgba(204,255,0,.03);padding:32px;margin-top:8px;}
+.nl-card-label{font-size:9px;letter-spacing:.18em;color:var(--accent);text-transform:uppercase;margin-bottom:12px;}
+.nl-card-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(20px,2.5vw,32px);font-weight:800;text-transform:uppercase;color:var(--text);margin-bottom:14px;line-height:1;}
+.nl-card-desc{font-size:12px;color:var(--muted);line-height:1.75;margin-bottom:20px;max-width:520px;}
+.nl-card-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+.nl-meta-tag{font-size:9px;letter-spacing:.12em;padding:5px 10px;border:1px solid rgba(204,255,0,.2);color:rgba(204,255,0,.7);text-transform:uppercase;}
+.ai-side{display:grid;grid-template-rows:1fr 1fr;}
+.ai-stat{padding:80px 40px;border-bottom:1px solid var(--grid);display:flex;flex-direction:column;justify-content:center;}
+.ai-stat:last-child{border-bottom:none;}
+.ai-s-num{font-family:'Bricolage Grotesque',sans-serif;font-size:80px;color:var(--accent);margin-bottom:10px;}
+
+/* STUDIO */
+.studio-grid{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--grid);}
+.studio-stats{display:grid;grid-template-columns:1fr 1fr;border-right:1px solid var(--grid);}
+.ss-box{padding:40px;border-bottom:1px solid var(--grid);border-right:1px solid var(--grid);}
+.ss-box:nth-child(even){border-right:none;}
+.ss-box:nth-last-child(-n+2){border-bottom:none;}
+.ss-num{font-family:'Bricolage Grotesque',sans-serif;font-size:48px;margin-bottom:10px;}
+.studio-text{padding:80px 40px;}
+.st-head{font-family:'Bricolage Grotesque',sans-serif;font-size:32px;margin-bottom:20px;}
+.spec-row{display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--grid);font-size:14px;}
+.spec-row:last-child{border-bottom:none;}
+.spec-v{color:var(--accent);}
+
+/* JOURNEY */
+.journey-item{display:grid;grid-template-columns:1fr 3fr;padding:60px 40px;border-bottom:1px solid var(--grid);transition:background .3s;}
+.journey-item:hover{background:rgba(255,255,255,.03);}
+.j-meta{display:flex;flex-direction:column;gap:10px;}
+.j-date{color:var(--accent);font-weight:700;font-size:14px;}
+.j-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px;}
+.j-tag{font-size:10px;padding:4px 8px;border:1px solid var(--muted);color:var(--muted);}
+.j-role{font-family:'Bricolage Grotesque',sans-serif;font-size:32px;margin-bottom:16px;color:var(--text);}
+.j-desc{font-size:16px;line-height:1.7;color:var(--muted);max-width:700px;}
+
+/* CONTACT */
+.contact-section{padding:120px 40px;text-align:center;border-bottom:1px solid var(--grid);}
+.contact-link{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(40px,8vw,120px);color:var(--text);text-decoration:none;display:block;margin:40px 0;transition:color .3s;}
+.contact-link:hover{color:var(--accent);}
+.contact-btn-row{display:flex;gap:20px;justify-content:center;}
+.contact-btn{text-decoration:none;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:14px 28px;border:1px solid rgba(255,255,255,.3);color:var(--text);background:transparent;transition:all .3s;}
+.contact-btn:hover{background:var(--accent);color:#050505;border-color:var(--accent);}
+.footer{display:flex;justify-content:space-between;padding:40px;font-size:12px;color:var(--muted);text-transform:uppercase;}
+
+/* MOBILE */
+@media(max-width:900px){
+  body{cursor:auto;}
+  .cursor{display:none!important;}
+  .nav-links{display:none;}
+  .hero{padding-top:120px;}
+  .hero-stats{grid-template-columns:1fr 1fr;}
+  .hs-box:nth-child(2){border-right:none;}
+  .hs-box{border-bottom:1px solid var(--grid);}
+  .section-header{grid-template-columns:1fr;gap:20px;padding:60px 20px;}
+  .about-grid,.ai-grid,.studio-grid,.journey-item{grid-template-columns:1fr;}
+  .about-text,.ai-main,.studio-stats{border-right:none;border-bottom:1px solid var(--grid);}
+  .as-box,.ai-stat,.ss-box,.studio-text,.contact-section{padding:40px 20px;}
+  .j-meta{margin-bottom:20px;}
+  .footer{flex-direction:column;gap:20px;text-align:center;padding:40px 20px;}
+  .contact-btn-row{flex-direction:column;align-items:center;}
+  .video-showcase,.work-cards{padding:60px 20px;}
+  .vs-grid-2,.vs-grid-3,.vs-row-mixed,.wc-grid{grid-template-columns:1fr;}
+  #leadership > div:last-child{grid-template-columns:1fr!important;}
+  #leadership > div:last-child > div:first-child{border-right:none;border-bottom:1px solid var(--grid);}
+  #leadership > div:last-child > div:first-child{padding:40px 20px!important;}
+  .wc-card-full{grid-column:span 1;}
+  .vc-caption,.wc-bottom{flex-direction:column;gap:8px;}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor"></div>
+
+<nav>
+  <a href="#hero" class="logo hover-target">K.S.</a>
+  <div class="nav-links">
+    <a href="#about" class="hover-target">About</a>
+    <a href="#work" class="hover-target">Work</a>
+    <a href="#ai" class="hover-target">AI Stack</a>
+    <a href="#studio" class="hover-target">Studio</a>
+    <a href="#leadership" class="hover-target">Leadership</a>
+    <a href="#journey" class="hover-target">Journey</a>
+    <a href="#contact" class="hover-target">Contact</a>
+  </div>
+</nav>
+
+<div class="grid-container">
+
+  <!-- HERO -->
+  <section id="hero" class="hero">
+    <h1 class="hero-title gsap-trigger">Keerthi Sarath</h1>
+    <div class="hero-sub gsap-trigger">
+      <div class="hero-role">Creative Director &amp; Head of Content — B2B SaaS</div>
+      <div class="hero-desc">8 years building brands, teams, and content systems from zero.<br>From Keka's first social hire to leading a <span>20+ person creative team</span> — across video, social, brand, and <span>AI-powered production</span>.</div>
+    </div>
+    <div class="marquee-container">
+      <div class="marquee-content" id="marquee">
+        <span>AI-Native Storyteller</span><span>•</span><span>Creative Leadership</span><span>•</span><span>Brand Strategy</span><span>•</span><span>Content Infrastructure</span><span>•</span><span>AI-Native Storyteller</span><span>•</span><span>Creative Leadership</span><span>•</span><span>Brand Strategy</span><span>•</span><span>Content Infrastructure</span><span>•</span>
+      </div>
+    </div>
+    <div class="hero-stats" style="border-bottom:1px solid var(--grid);">
+      <div class="hs-box hover-target"><div class="hs-num gsap-trigger">200K+</div><div class="mono-sm">Social Following Built</div></div>
+      <div class="hs-box hover-target"><div class="hs-num gsap-trigger">40M+</div><div class="mono-sm">Impressions Driven</div></div>
+      <div class="hs-box hover-target"><div class="hs-num gsap-trigger">20+</div><div class="mono-sm">Creatives Managed</div></div>
+      <div class="hs-box hover-target"><div class="hs-num gsap-trigger">₹1Cr+</div><div class="mono-sm">Production Budgets</div></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-header hover-target">
+      <div class="mono-sm">01 / Profile</div>
+      <h2 class="sec-title">The Full Picture.</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p style="margin-bottom:20px;">I'm a <strong>Creative Director</strong> with 8 years building content, video, and brand systems at high-growth B2B SaaS companies. As a founding member of Keka's marketing team, I grew from the company's first social hire into an Associate Creative Director leading teams of 20+.</p>
+        <p style="margin-bottom:20px;">Eight years at one company isn't a limitation — it's a choice. I joined when Keka had 500 LinkedIn followers and no creative function. I stayed because there was always more to build: the team, the studios, the brand, the AI stack. I left when the function was scaled. That's the reason, not the ceiling.</p>
+        <p style="margin-bottom:20px;">I'm equal parts creative director, brand builder, and operator. I don't just make things look good — I build the systems, teams, and infrastructure that make creative output scale.</p>
+        <p>Today I sit at the intersection of brand storytelling and generative AI — using tools like Veo 3, HeyGen, Runway, and ElevenLabs to produce at quality and pace that wasn't possible before.</p>
+      </div>
+      <div class="about-stats">
+        <div class="as-box hover-target"><div class="as-num">200K+</div><div class="mono-sm as-label"><a href="https://www.linkedin.com/posts/keerthi-sarath-sarekokku-834a48169_milestone-branding-social-share-7444989833082679297-2wV9/" target="_blank" style="color:var(--accent);text-decoration:none;">Social following built from near zero ↗</a></div></div>
+        <div class="as-box hover-target"><div class="as-num">10M+</div><div class="mono-sm as-label">Organic video views across platforms</div></div>
+        <div class="as-box hover-target"><div class="as-num">5,000+</div><div class="mono-sm as-label">Creative assets produced</div></div>
+        <div class="as-box hover-target"><div class="as-num">50K+</div><div class="mono-sm as-label">Keka Academy learners enrolled</div></div>
+        <div class="as-box hover-target"><div class="as-num">₹1Cr+</div><div class="mono-sm as-label">Production &amp; campaign budgets</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work">
+    <div class="section-header hover-target">
+      <div class="mono-sm">02 / Proof of Work</div>
+      <h2 class="sec-title">What I've Built.</h2>
+    </div>
+
+    <!-- VIDEO SHOWCASE -->
+    <div class="video-showcase">
+      <div class="vs-intro">
+        <h3>Selected<br><span style="color:var(--accent)">Video Work</span></h3>
+        <p>Click any card to play inline. 8 pieces across 8 capabilities.</p>
+      </div>
+
+      <!-- ROW 1: Full — March 31st -->
+      <div class="vs-row-full">
+        <div class="vc hover-target">
+          <div class="vc-media r169">
+            <div class="vc-placeholder" onclick="playVideo(this,'VuDa4YLFyBk')">
+              <div class="vc-play-btn"><div class="vc-tri"></div></div>
+              <div class="vc-placeholder-label">March 31st Dreading</div>
+              <div class="vc-hint">Click to play</div>
+            </div>
+          </div>
+          <div class="vc-caption">
+            <div class="vc-cap-left">
+              <span class="vc-cap-tag">Brand Film · Single Take · No Cuts</span>
+              <div class="vc-cap-title">March 31st Dreading</div>
+              <div class="vc-cap-desc">A 45-second brand film shot entirely in a single take — zero cuts, zero edits. Scripted, directed, and produced in-house. Captured the year-end chaos every finance and HR team knows.</div>
+            </div>
+            <div class="vc-cap-stat">162K Views</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROW 2: 2-col -->
+      <div class="vs-grid-2">
+        <div class="vc hover-target">
+          <div class="vc-media r169">
+            <div class="vc-placeholder" onclick="playVideo(this,'aesoFd3dCmA')">
+              <div class="vc-play-btn"><div class="vc-tri"></div></div>
+              <div class="vc-placeholder-label">HR Katalyst 5.0 Promo</div>
+              <div class="vc-hint">Click to play</div>
+            </div>
+          </div>
+          <div class="vc-caption">
+            <div class="vc-cap-left">
+              <span class="vc-cap-tag">Event Promo · 100% AI-Generated</span>
+              <div class="vc-cap-title">HR Katalyst 5.0</div>
+              <div class="vc-cap-desc">AI-generated promo for Keka's flagship virtual HR event. Produced entirely with generative AI — prompt engineering, image generation, video synthesis. Zero traditional production. The 2025 edition reached 27K+ global live viewers — largest in the HR segment.</div>
+            </div>
+          </div>
+        </div>
+        <div class="vc hover-target">
+          <div class="vc-media r169">
+            <div class="vc-placeholder" onclick="playVideo(this,'QFyVU-7h11s')">
+              <div class="vc-play-btn"><div class="vc-tri"></div></div>
+              <div class="vc-placeholder-label">7000 Years of HRM Evolution</div>
+              <div class="vc-hint">Click to play</div>
+            </div>
+          </div>
+          <div class="vc-caption">
+            <div class="vc-cap-left">
+              <span class="vc-cap-tag">Brand Documentary · Event Anthem</span>
+              <div class="vc-cap-title">7000 Years of HR</div>
+              <div class="vc-cap-desc">Opening film at every Keka event. Including Virtual HR Katalyst 3.0 &amp; 4.0 — 1.5–2 lakh combined live viewers.</div>
+            </div>
+            <div class="vc-cap-stat">1.5L+ Live</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROW 3: 3-col -->
+      <div class="vs-grid-3">
+        <div class="vc hover-target">
+          <div class="vc-media r169">
+            <div class="vc-placeholder" onclick="playVideo(this,'3Fw_lSjDpwE')">
+              <div class="vc-play-btn"><div class="vc-tri"></div></div>
+              <div class="vc-placeholder-label">Keka PSA Explainer</div>
+              <div class="vc-hint">Click to play</div>
+            </div>
+          </div>
+          <div class="vc-caption">
+            <div class="vc-cap-left">
+              <span class="vc-cap-tag">Product Explainer · Pipeline Impact</span>
+              <div class="vc-cap-title">Keka PSA</div>
+              <div class="vc-cap-desc">Scripted, directed, supervised. Directly influenced sales pipeline.</div>
+            </div>
+            <div class="vc-cap-stat">40K Views</div>
+          </div>
+        </div>
+        <div class="vc hover-target">
+          <div class="vc-media r169">
+            <div class="vc-placeholder" onclick="playVideo(this,'9xD-5hbtqXc')">
+              <div class="vc-play-btn"><div class="vc-tri"></div></div>
+              <div class="vc-placeholder-label">Dr. T.V. Rao — Video Essay</div>
+              <div class="vc-hint">Click to play</div>
+            </div>
+          </div>
+          <div class="vc-caption">
+            <div class="vc-cap-left">
+              <span class="vc-cap-tag">Video Essay · 10 Minutes</span>
+              <div class="vc-cap-title">Dr. T.V. Rao</div>
+              <div class="vc-cap-desc">Motion design, film grain, storytelling-intensive. Appreciated by T.V. Rao himself. Standing ovation at HR Katalyst Ahmedabad.</div>
+            </div>
+          </div>
+        </div>
+        <div class="vc hover-target">
+          <div class="vc-media r169">
+            <div class="vc-placeholder" onclick="playVideo(this,'C8uCgmjJlZ4')">
+              <div class="vc-play-btn"><div class="vc-tri"></div></div>
+              <div class="vc-placeholder-label">Keka x AI — JD Generator</div>
+              <div class="vc-hint">Click to play</div>
+            </div>
+          </div>
+          <div class="vc-caption">
+            <div class="vc-cap-left">
+              <span class="vc-cap-tag">Product Launch · Narrative Film</span>
+              <div class="vc-cap-title">Keka x AI</div>
+              <div class="vc-cap-desc">Concept-led film making a technical AI feature feel urgent and human.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROW 4: Mixed -->
+      <div class="vs-row-mixed">
+        <div class="vc hover-target">
+          <div class="vc-media r169">
+            <div class="vc-placeholder" onclick="playVideo(this,'NMG1RvaxVhA')">
+              <div class="vc-play-btn"><div class="vc-tri"></div></div>
+              <div class="vc-placeholder-label">Landsterling, Dubai</div>
+              <div class="vc-hint">Click to play</div>
+            </div>
+          </div>
+          <div class="vc-caption">
+            <div class="vc-cap-left">
+              <span class="vc-cap-tag">Customer Story · International Shoot</span>
+              <div class="vc-cap-title">Landsterling, Dubai</div>
+              <div class="vc-cap-desc">Shot on-location in Dubai. Scripted, location-scouted, set-designed, directed on-ground.</div>
+            </div>
+          </div>
+        </div>
+        <div class="vc hover-target">
+          <div class="vc-media r916">
+            <div class="vc-placeholder" onclick="playVideo(this,'NfpnjEAlzYs')">
+              <div class="vc-play-btn"><div class="vc-tri"></div></div>
+              <div class="vc-placeholder-label">5 Tools for HR</div>
+              <div class="vc-hint">Click to play</div>
+            </div>
+          </div>
+          <div class="vc-caption">
+            <div class="vc-cap-left">
+              <span class="vc-cap-tag">Short-Form · Social Native</span>
+              <div class="vc-cap-title">5 Tools for HR</div>
+              <div class="vc-cap-desc">Repurposed from long-form, optimised for short-form social. Organic reach, no paid promotion.</div>
+            </div>
+            <div class="vc-cap-stat">111K Views</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NON-VIDEO WORK CARDS -->
+    <div class="work-cards">
+      <div class="wc-intro">
+        <h3>Beyond<br><span style="color:var(--accent)">The Screen</span></h3>
+        <p>Campaigns, platforms, and intellectual property built alongside the video work.</p>
+      </div>
+      <div class="wc-grid">
+
+        <!-- $57M Campaign — full width -->
+        <div class="wc-card wc-card-full hover-target">
+          <div class="wc-top">
+            <span class="wc-tag">Campaign · Brand · Milestone</span>
+            <div class="wc-title">India's Largest B2B SaaS<br>Series A Campaign</div>
+            <p class="wc-desc" style="max-width:900px;">The brief wasn't complicated: announce India's largest B2B SaaS Series A and make it feel earned, not corporate. I led the end-to-end creative strategy — coordinating directly with Keka's founders, department heads, CS Director, Sales President, and Product Head. Organised professional headshots for leadership, scripted and filmed video content, briefed designers on campaign visuals, and orchestrated the simultaneous social rollout across every stakeholder's personal and company channels.</p>
+            <p class="wc-desc" style="max-width:900px;margin-top:12px;">The goal was to make this feel like a human story — a bootstrapped company that built something real, finally getting its moment. Not a press release. Combined with leadership posting, PR coverage, and cross-channel amplification, estimated organic reach crossed 1M+.</p>
+          </div>
+          <div class="wc-bottom">
+            <div>
+              <div class="wc-stat">1M+</div>
+              <div class="wc-stat-label">Estimated Organic Reach · Founders · C-Suite · PR Combined</div>
+            </div>
+            <a href="https://www.linkedin.com/posts/keka-hr_keka-secures-indias-largest-series-a-saas-activity-6996051155122352129-SXJS" target="_blank" class="wc-link hover-target">View Campaign Post ↗</a>
+          </div>
+        </div>
+
+        <!-- Keka Comics -->
+        <div class="wc-card hover-target">
+          <div class="wc-top">
+            <span class="wc-tag">Original IP · Satirical Content</span>
+            <div class="wc-title">Keka Comics</div>
+            <p class="wc-desc">Conceived and launched a satirical comic series on the everyday absurdities of HR and workplace culture — entirely from zero. Built the format, the characters, the publishing system, and a community submission portal. 50+ comics produced, still live on Keka's website. The only original IP a B2B HR brand was running in India at the time.</p>
+          </div>
+          <div class="wc-bottom">
+            <div>
+              <div class="wc-stat">100K+</div>
+              <div class="wc-stat-label">Impressions · 50+ Comics</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HR Perspective -->
+        <div class="wc-card hover-target">
+          <div class="wc-top">
+            <span class="wc-tag">Thought Leadership · Platform Build</span>
+            <div class="wc-title">HR Perspective Series</div>
+            <p class="wc-desc">Built Keka's thought leadership programme from scratch during COVID-19 — when most brands went quiet. Evaluated tools, coordinated C-suite speakers including Wayne Brockbank (RBL Group), built the landing page, produced live sessions, and wrote long-form summary articles. 15+ sessions, 20K+ viewers. Still live on Keka's website.</p>
+          </div>
+          <div class="wc-bottom">
+            <div>
+              <div class="wc-stat">20K+</div>
+              <div class="wc-stat-label">Viewers · 15+ Sessions · C-Suite Guests</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Keka Academy -->
+        <div class="wc-card hover-target">
+          <div class="wc-top">
+            <span class="wc-tag">Education · Platform · Zero to One</span>
+            <div class="wc-title">Keka Academy</div>
+            <p class="wc-desc">Built Keka Academy from the ground up — a free HR certification platform for practitioners and aspirants. Conceived the content architecture, directed curriculum development, produced the video courses, and built distribution across Keka's own platform and Udemy. Courses cover core HR functions: payroll, core HR, ATS, compensation, and more. The platform established Keka as a credible educational voice in the HR space — not just a software vendor. Courses have averaged a 4-star rating from students and working HR professionals. Enrolment numbers confirm it became one of the most-used free HR learning resources in India.</p>
+          </div>
+          <div class="wc-bottom">
+            <div style="display:flex;gap:40px;flex-wrap:wrap;">
+              <div>
+                <div class="wc-stat">50K+</div>
+                <div class="wc-stat-label">Enrolled Learners</div>
+              </div>
+              <div>
+                <div class="wc-stat">4★</div>
+                <div class="wc-stat-label">Avg Rating · Udemy</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Brand Guidelines -->
+        <div class="wc-card hover-target">
+          <div class="wc-top">
+            <span class="wc-tag">Brand Identity · Design System</span>
+            <div class="wc-title">Keka Design System<br>&amp; Brand Guidelines</div>
+            <p class="wc-desc">Created Keka's first design system in 2021 — built off the website as a foundation: colour, typography, spacing, and component systems, then templatised in Canva for org-wide adoption. When Keka expanded post-funding, a new designer evolved the DS further for the wider org. The social and video system I created continued to run as the production foundation for those teams — the original framework that held consistency across Keka's content output during its highest-growth years.</p>
+          </div>
+          <div class="wc-bottom">
+            <div>
+              <div class="wc-stat-label" style="font-size:11px;color:var(--muted);line-height:1.5;">First DS · Social &amp; Video Foundation ·<br>Canva-templatised for org-wide use</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HR Katalyst -->
+        <div class="wc-card wc-card-full hover-target">
+          <div class="wc-top">
+            <span class="wc-tag">Event Coverage · Live Production · Social Strategy</span>
+            <div class="wc-title">HR Katalyst — India's Largest<br>Virtual HR Event Series</div>
+            <p class="wc-desc" style="max-width:900px;">HR Katalyst is Keka's flagship event series — a collaboration across multiple teams. My role across all five editions was creative coverage, social strategy, and live production. For the 500+ physical events across India, the Middle East, and the US, my team owned on-ground shoots: briefing, scripting, location setup, shoot direction, editing, and distribution. For the flagship virtual events (HR Katalyst 1.0–5.0), we handled live streaming operations, agency partnership, set creation within the office, live ops supervision, and real-time social execution. I built and executed the social strategy that ensured every edition reached its maximum audience — crafting content before, during, and after each event to extend reach well beyond the live window.</p>
+            <p class="wc-desc" style="max-width:900px;margin-top:12px;">The virtual flagship events have grown to become the largest of their kind in the HR segment in India. Cumulative live viewership across all virtual editions has crossed 1L+. The 2025 edition alone hit 27K+ global live viewers.</p>
+          </div>
+          <div class="wc-bottom">
+            <div style="display:flex;gap:48px;flex-wrap:wrap;">
+              <div>
+                <div class="wc-stat">500+</div>
+                <div class="wc-stat-label">Physical Events Covered</div>
+              </div>
+              <div>
+                <div class="wc-stat">27K+</div>
+                <div class="wc-stat-label">Live Viewers · 2025 Edition</div>
+              </div>
+              <div>
+                <div class="wc-stat">1L+</div>
+                <div class="wc-stat-label">Cumulative Virtual Audience</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- AI STACK -->
+  <section id="ai">
+    <div class="section-header hover-target">
+      <div class="mono-sm">03 / AI Stack</div>
+      <h2 class="sec-title">The New<br>Creative Stack.</h2>
+    </div>
+    <div class="ai-grid">
+      <div class="ai-main">
+        <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-size:32px;font-weight:800;text-transform:uppercase;margin-bottom:20px;color:var(--text);">I Don't Use AI.<br>I Build With It.</h3>
+        <p>While most teams were still debating AI, I was integrating it into daily production. Researched, tested, and deployed a generative stack that compressed production steps that used to take days into hours — and eliminated entire categories of cost. Prompt engineering, model selection, workflow design, team training. End to end.</p>
+        <div style="font-size:9px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;margin-bottom:12px;">Generative AI</div>
+        <div class="ai-tags" style="margin-bottom:32px;">
+          <span class="ai-tag">Runway Gen-3</span><span class="ai-tag">HeyGen</span><span class="ai-tag">Veo 3</span><span class="ai-tag">Midjourney</span><span class="ai-tag">ElevenLabs</span><span class="ai-tag">Claude</span><span class="ai-tag">Agent.ai</span><span class="ai-tag">Higgsfield</span>
+        </div>
+        <div style="font-size:9px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;margin-bottom:12px;">Editing &amp; Design</div>
+        <div class="ai-tags">
+          <span class="ai-tag">Premiere Pro</span><span class="ai-tag">After Effects</span><span class="ai-tag">DaVinci Resolve</span><span class="ai-tag">Photoshop</span><span class="ai-tag">Figma</span><span class="ai-tag">Canva</span>
+        </div>
+        <!-- NEURAL LENS -->
+        <div class="nl-card">
+          <div class="nl-card-label">Personal Project · Thought Experiment Turned Real</div>
+          <div class="nl-card-title">Neural Lens</div>
+          <p class="nl-card-desc">Every week I'm reviewing creative — videos, designs, scripts, copy. And every week the feedback loop is the same: subjective opinions, gut calls, "I think this works." I wanted something more rigorous. When Meta released the Tribe v2 model, I saw an opening. What started as a thought experiment — can I build something that reads brain response to creative content in real time? — became a working proof of concept in a few weeks. Built with Claude and Hugging Face, Neural Lens takes video, audio, image, or text input and maps network activation over time. Not a finished product. What happens when curiosity meets a real problem and a new model drops at the right moment. Got validated — people who saw it immediately understood the use case.</p>
+          <div class="nl-card-meta">
+            <span class="nl-meta-tag">Claude API</span>
+            <span class="nl-meta-tag">Hugging Face</span>
+            <span class="nl-meta-tag">Meta Tribe v2</span>
+            <span class="nl-meta-tag">Multi-modal Input</span>
+            <span class="nl-meta-tag">Self-funded</span>
+          </div>
+          <a href="https://huggingface.co/spaces/idkbutitworks/NeuralLens" target="_blank" class="wc-link hover-target" style="display:inline-flex;">View on Hugging Face ↗</a>
+        </div>
+      </div>
+      <div class="ai-side">
+        <div class="ai-stat hover-target">
+          <div class="ai-s-num">30</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:800;text-transform:uppercase;margin-bottom:10px;">Videos Per Month</div>
+          <div class="mono-md">Built a blog-to-video workflow for the content team — scripting, avatar generation, animations — so the Director of Content can now ship 30 videos a month independently, without touching the core video team.</div>
+        </div>
+        <div class="ai-stat hover-target">
+          <div class="ai-s-num">40%</div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:800;text-transform:uppercase;margin-bottom:10px;">Faster Turnaround</div>
+          <div class="mono-md">Slashed traditional production time across 5,000+ assets while saving ₹2L+ in immediate workflow costs.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STUDIO -->
+  <section id="studio">
+    <div class="section-header hover-target">
+      <div class="mono-sm">04 / Infrastructure</div>
+      <h2 class="sec-title">Built From Nothing.</h2>
+    </div>
+    <div class="studio-grid">
+      <div class="studio-stats">
+        <div class="ss-box hover-target"><div class="ss-num">4</div><div class="mono-sm">Studios Built</div></div>
+        <div class="ss-box hover-target"><div class="ss-num">₹25L+</div><div class="mono-sm">Equipment Inv.</div></div>
+        <div class="ss-box hover-target"><div class="ss-num">20+</div><div class="mono-sm">Creative Team</div></div>
+        <div class="ss-box hover-target"><div class="ss-num">₹1Cr+</div><div class="mono-sm">Budgets Managed</div></div>
+      </div>
+      <div class="studio-text">
+        <h3 class="st-head">From a single camera to a full production infrastructure.</h3>
+        <p class="mono-md" style="margin-bottom:20px;">When I joined Keka, there was no studio, no team, no process. I built the entire creative infrastructure from scratch — equipment, people, workflows, and quality systems.</p>
+        <p class="mono-md" style="margin-bottom:40px;">Today it's a fully operational in-house unit delivering broadcast-quality content at the pace of a social-first brand.</p>
+        <div class="spec-list">
+          <div class="spec-row hover-target"><span>Studios operational</span><span class="spec-v">4 units</span></div>
+          <div class="spec-row hover-target"><span>Equipment budget</span><span class="spec-v">₹25L+</span></div>
+          <div class="spec-row hover-target"><span>Team size built</span><span class="spec-v">20+ people</span></div>
+          <div class="spec-row hover-target"><span>Budget managed</span><span class="spec-v">₹1Cr+</span></div>
+          <div class="spec-row hover-target"><span>International shoots</span><span class="spec-v">India · ME · US</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BTS IMAGE — always visible -->
+    <div style="border-top:1px solid var(--grid);">
+      <img src="studio-bts.png" alt="Keka Studios and Sets — Behind the Scenes" style="width:100%;display:block;object-fit:cover;max-height:600px;">
+      <div style="padding:18px 40px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--grid);">
+        <div style="font-size:9px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;">Behind the Scenes</div>
+        <div style="font-size:11px;color:var(--muted);letter-spacing:.06em;">4 studios · Multiple set configurations · Hyderabad, India</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEADERSHIP -->
+  <section id="leadership">
+    <div class="section-header hover-target">
+      <div class="mono-sm">05 / How I Lead</div>
+      <h2 class="sec-title">The Way<br><span style="color:var(--accent)">I Work.</span></h2>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--grid);">
+      <div style="padding:80px 40px;border-right:1px solid var(--grid);">
+        <div style="font-size:9px;letter-spacing:.16em;color:var(--accent);text-transform:uppercase;margin-bottom:24px;">Management Philosophy</div>
+        <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(24px,3vw,40px);font-weight:800;text-transform:uppercase;line-height:1;margin-bottom:28px;color:var(--text);">I Don't Manage Output.<br>I Manage Context.</h3>
+        <p style="font-size:15px;line-height:1.85;color:var(--muted);margin-bottom:20px;">Most creative blockers aren't skill problems — they're clarity problems. When someone understands the real stakes of their work, what it means for the business and the person receiving it, ownership follows naturally. You don't have to chase it.</p>
+        <p style="font-size:15px;line-height:1.85;color:var(--muted);margin-bottom:20px;">My job as a manager is to make that context visible and then get out of the way. Set the standard clearly, explain the why behind it, and remove every obstacle between the person and doing their best work. A blocked creative isn't a slow creative — they're a frustrated one. Unblocking them consistently is the loudest signal a manager can send about how seriously they take the team.</p>
+        <p style="font-size:15px;line-height:1.85;color:var(--muted);">I've hired designers, editors, motion artists, and social managers and led them through zero-to-one builds. What I've learned: people rise to the level of trust you extend to them.</p>
+      </div>
+      <div style="display:grid;grid-template-rows:repeat(3,1fr);">
+        <div style="padding:40px;border-bottom:1px solid var(--grid);display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,3vw,44px);font-weight:800;color:var(--accent);margin-bottom:8px;">Context First</div>
+          <div class="mono-md">Explain the why before the what. People who understand stakes don't need to be chased.</div>
+        </div>
+        <div style="padding:40px;border-bottom:1px solid var(--grid);display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,3vw,44px);font-weight:800;color:var(--accent);margin-bottom:8px;">Remove Blockers</div>
+          <div class="mono-md">Clearing the path is the manager's job. A team that moves fast is usually a team whose manager moves faster.</div>
+        </div>
+        <div style="padding:40px;display:flex;flex-direction:column;justify-content:center;">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(28px,3vw,44px);font-weight:800;color:var(--accent);margin-bottom:8px;">Trust as a Signal</div>
+          <div class="mono-md">Extending trust before it's earned isn't risk — it's the fastest way to build a team that owns their work.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOURNEY -->
+  <section id="journey">
+    <div class="section-header hover-target">
+      <div class="mono-sm">06 / The Keka Journey</div>
+      <h2 class="sec-title">Zero to One.</h2>
+      <p class="mono-md" style="margin-top:20px;">From founding marketer to creative leadership.</p>
+    </div>
+    <div class="journey-list">
+      <div class="journey-item"><div class="j-meta"><div class="j-date">Sep 2023 — Present</div><div class="j-tags"><span class="j-tag">AI Integration</span><span class="j-tag">Creative Direction</span><span class="j-tag">Brand Strategy</span></div></div><div><div class="j-role">Associate Creative Director &amp; Head of Social</div><div class="j-desc">Led full creative direction across video, social, brand, and events. Integrated generative AI stack reducing turnaround 30–40%. Managed ₹1Cr+ budgets, delivered 5,000+ assets, and grew social following past 200,000+. Led creative coverage and social strategy for HR Katalyst flagship virtual events — growing cumulative live audience to 1L+ across the series, with the 2025 edition hitting 27K+ global live viewers.</div></div></div>
+      <div class="journey-item"><div class="j-meta"><div class="j-date">Jun 2021 — Sep 2023</div><div class="j-tags"><span class="j-tag">Team Leadership</span><span class="j-tag">Studio Build</span><span class="j-tag">Events</span></div></div><div><div class="j-role">Social Media Head &amp; Creative Lead</div><div class="j-desc">Directed designers, editors, and contributors across campaigns, commercials, employer branding, and event storytelling. Launched Keka Academy (50K+ learners), led the $57M funding campaign, and authored Keka's brand guidelines. Covered 400+ physical events across India and internationally — on-ground shoots, direction, editing, and distribution. Executed social strategy and live production for HR Katalyst flagship virtual editions.</div></div></div>
+      <div class="journey-item"><div class="j-meta"><div class="j-date">Oct 2019 — Jun 2021</div><div class="j-tags"><span class="j-tag">Video</span><span class="j-tag">Webinars</span><span class="j-tag">Community</span></div></div><div><div class="j-role">Product Marketing &amp; Social Growth Lead</div><div class="j-desc">Grew LinkedIn presence from ~2,300 to 80,000+ followers. Produced the HR Perspective series — 15+ sessions, 20K+ viewers during COVID-19. Launched LinkedIn newsletter to 30K+ subscribers.</div></div></div>
+      <div class="journey-item" style="border-bottom:1px solid var(--grid);"><div class="j-meta"><div class="j-date">Sep 2018 — Oct 2019</div><div class="j-tags"><span class="j-tag">Content</span><span class="j-tag">SEO</span><span class="j-tag">Brand Voice</span><span class="j-tag">Social</span></div></div><div><div class="j-role">Early Product Marketing &amp; Social Media Lead</div><div class="j-desc">Built Keka's social presence from 500 followers as the third marketing hire. Ran Keka's first in-house event (50+ HR leaders/CHROs), edited the first customer testimonial, and led the first equipment budgeting as video demand emerged.</div></div></div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact-section">
+    <div class="mono-sm" style="margin-bottom:40px;">07 / Contact</div>
+    <div class="mono-md hover-target">Open to Creative Director, Head of Content, and Brand Lead roles at B2B SaaS companies. Remote-first.</div>
+    <a href="mailto:sarath.sarekokku@gmail.com" class="contact-link hover-target">Let's Build<br>Something Great.</a>
+    <div class="contact-btn-row">
+      <a href="https://linkedin.com/in/keerthi-sarath-sarekokku-834a48169" target="_blank" class="contact-btn hover-target">LinkedIn</a>
+      <a href="#" class="contact-btn hover-target">Resume</a>
+      <a href="mailto:sarath.sarekokku@gmail.com" class="contact-btn hover-target">Email</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>© 2026 KEERTHI SARATH SAREKOKKU</div>
+    <div>CREATIVE DIRECTOR · HYDERABAD, INDIA</div>
+    <div>BUILT FOR SCALE.</div>
+  </footer>
+
+</div>
+
+<script>
+function playVideo(placeholder, videoId) {
+  var media = placeholder.parentElement;
+  placeholder.remove();
+  var iframe = document.createElement('iframe');
+  iframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0';
+  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+  iframe.allowFullscreen = true;
+  iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:none;';
+  media.appendChild(iframe);
+  // Shield sits above iframe, passes mouse events to window for cursor tracking
+  // but lets clicks through to iframe via pointer-events toggle on click
+  var shield = document.createElement('div');
+  shield.className = 'vc-iframe-shield';
+  media.appendChild(shield);
+  media.classList.add('playing');
+  // Click on shield toggles play/pause via postMessage, passes through
+  shield.addEventListener('click', function() {
+    iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+  });
+}
+
+var lenis = new Lenis({ duration: 1.2, easing: function(t){ return Math.min(1, 1.001 - Math.pow(2, -10 * t)); }, smooth: true });
+function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+requestAnimationFrame(raf);
+
+if (window.innerWidth > 900) {
+  var cursor = document.querySelector('.cursor');
+  window.addEventListener('mousemove', function(e) {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+  document.querySelectorAll('.hover-target, a, button').forEach(function(el) {
+    el.addEventListener('mouseenter', function(){ document.body.classList.add('hovering'); });
+    el.addEventListener('mouseleave', function(){ document.body.classList.remove('hovering'); });
+  });
+}
+
+gsap.registerPlugin(ScrollTrigger);
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(function(time){ lenis.raf(time * 1000); });
+gsap.ticker.lagSmoothing(0);
+gsap.to('#marquee', { xPercent: -50, repeat: -1, duration: 15, ease: 'linear' });
+gsap.utils.toArray('.gsap-trigger').forEach(function(el) {
+  gsap.fromTo(el,
+    { clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0% 100%)', y: 30, opacity: 0 },
+    { clipPath: 'polygon(0 0%, 100% 0%, 100% 100%, 0% 100%)', y: 0, opacity: 1, duration: 1, ease: 'power4.out', scrollTrigger: { trigger: el, start: 'top 90%' } }
+  );
+});
+</script>
+</body>
+</html>
